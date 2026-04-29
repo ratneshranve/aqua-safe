@@ -13,16 +13,20 @@ exports.getDashboardData = async (req, res) => {
     const zoneStatus = {};
     for(let i=1; i<=19; i++) zoneStatus[`Z-${i}`] = 'Green';
 
-    alerts.forEach(alert => {
-      const { zone } = alert;
-      // Depending on severity, we could mark Yellow or Red.
-      // E.g., recent alerts in 24h = Red, otherwise Yellow, here just set to Red if alert exists.
-      if (zone) {
-        zoneStatus[zone] = 'Red';
+    const userCount = await User.countDocuments();
+    const engineerCount = await Engineer.countDocuments();
+    const unresolvedAlerts = await Alert.countDocuments({ assignedEngineer: null });
+    const pendingReports = await Report.countDocuments({ status: 'Pending' });
+
+    res.json({
+      zoneStatus,
+      stats: {
+        totalUsers: userCount,
+        totalEngineers: engineerCount,
+        activeAlerts: unresolvedAlerts,
+        pendingTasks: pendingReports
       }
     });
-
-    res.json(zoneStatus);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

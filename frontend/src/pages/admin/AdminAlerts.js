@@ -1,8 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import API_URL from '../../config';
-
 import { AuthContext } from '../../AuthContext';
+import { 
+  ShieldAlert, 
+  User, 
+  MapPin, 
+  Activity, 
+  Clock, 
+  CheckCircle2, 
+  UserPlus, 
+  Bell,
+  Thermometer,
+  Droplets,
+  Database
+} from 'lucide-react';
 
 const AdminAlerts = () => {
   const { user, socket } = useContext(AuthContext);
@@ -16,8 +28,6 @@ const AdminAlerts = () => {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const resAlerts = await axios.get(`${API_URL}/api/admin/alerts`, config);
         const resEng = await axios.get(`${API_URL}/api/admin/engineers`, config);
-        // Sort alerts by newest first (assuming backend does it, or we do it here if needed)
-        // Usually, the newest alerts are added to the beginning.
         setAlerts(resAlerts.data);
         setEngineers(resEng.data);
       } catch (err) {
@@ -44,8 +54,7 @@ const AdminAlerts = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.post(`${API_URL}/api/admin/alerts/assign`, { alertId, engineerId }, config);
-      alert('Engineer assigned to this Alert System task!');
-      // Update local state
+      alert('Engineer assigned to this task!');
       setAlerts(alerts.map(a => a._id === alertId ? {...a, assignedEngineer: engineers.find(e => e._id === engineerId)} : a));
     } catch (err) {
       console.error(err);
@@ -53,90 +62,138 @@ const AdminAlerts = () => {
   };
 
   return (
-    <div style={{ animation: 'fadeIn 0.4s ease-out' }}>
-      <div className="page-header" style={{ marginBottom: '1rem' }}>
-        <h1>System Alerts</h1>
+    <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
+      <div className="page-header" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 className="page-title" style={{ fontSize: '1.8rem', color: '#1e293b' }}>Active System Alerts</h1>
+          <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Critical water quality deviations across all zones.</p>
+        </div>
+        <div style={{ padding: '10px 20px', background: '#fee2e2', borderRadius: '30px', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #fecaca' }}>
+          <ShieldAlert size={18} />
+          <span style={{ fontWeight: 800, fontSize: '0.85rem' }}>{alerts.length} UNRESOLVED</span>
+        </div>
       </div>
 
-      <div className="table-container" style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e1e8f0', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
-          <thead>
-            <tr style={{ background: '#f8fafc', textAlign: 'left', borderBottom: '1px solid #e1e8f0' }}>
-              <th style={{ padding: '1rem' }}>METER ID</th>
-              <th style={{ padding: '1rem' }}>USER</th>
-              <th style={{ padding: '1rem' }}>LOCATION</th>
-              <th style={{ padding: '1rem' }}>DATA (TDS, TURB, PH)</th>
-              <th style={{ padding: '1rem' }}>REASON</th>
-              <th style={{ padding: '1rem' }}>DATE</th>
-              <th style={{ padding: '1rem', textAlign: 'right' }}>ASSIGN ENGINEER</th>
-            </tr>
-          </thead>
-          <tbody>
-            {alerts.length === 0 ? (
-              <tr>
-                <td colSpan="7" style={{ padding: '3rem', textAlign: 'center', color: '#888' }}>No active alerts.</td>
-              </tr>
-            ) : (
-              alerts.map((a) => (
-                <tr key={a._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '0.8rem 1rem' }}>
-                    <code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>{a.meterId}</code>
-                  </td>
-                  <td style={{ padding: '0.8rem 1rem', fontWeight: 500 }}>{a.user?.name || 'Unknown'}</td>
-                  <td style={{ padding: '0.8rem 1rem', color: '#666', fontSize: '0.75rem' }}>{a.zone} • {a.tank} • {a.ward}</td>
-                  <td style={{ padding: '0.8rem 1rem' }}>
-                    <div style={{ fontSize: '0.75rem', display: 'flex', gap: '0.5rem' }}>
-                      <span title="TDS">🚰 {a.tds}</span>
-                      <span title="Turbidity">☁️ {a.turbidity}</span>
-                      <span title="pH">🧪 {a.ph}</span>
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.8rem 1rem' }}>
-                    <span style={{ color: '#ef4444', background: '#fef2f2', padding: '2px 8px', borderRadius: '4px', fontWeight: 700, fontSize: '0.7rem' }}>{a.reason}</span>
-                  </td>
-                  <td style={{ padding: '0.8rem 1rem', color: '#888', fontSize: '0.75rem' }}>
-                    {new Date(a.dateTime).toLocaleDateString()}
-                  </td>
-                  <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
-                    {a.assignedEngineer ? (
-                      <span style={{ color: '#059669', fontWeight: 700, fontSize: '0.75rem' }}>✓ Assigned: {a.assignedEngineer.name}</span>
-                    ) : (
-                      <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <select 
-                          onChange={(e) => setSelectedEngineers({ ...selectedEngineers, [a._id]: e.target.value })} 
-                          value={selectedEngineers[a._id] || ""}
-                          style={{ padding: '4px 8px', width: '130px', fontSize: '0.75rem' }}
-                        >
-                          <option value="" disabled>Choose Engr...</option>
-                          {engineers.filter(e => e.zone === a.zone).map(eng => (
-                            <option key={eng._id} value={eng._id}>{eng.name}</option>
-                          ))}
-                        </select>
-                        <button 
-                          onClick={() => handleAssign(a._id, selectedEngineers[a._id])}
-                          disabled={!selectedEngineers[a._id]}
-                          style={{ 
-                            background: '#000', 
-                            color: '#fff', 
-                            border: 'none', 
-                            padding: '5px 12px', 
-                            borderRadius: '4px', 
-                            fontSize: '0.75rem', 
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            opacity: !selectedEngineers[a._id] ? 0.4 : 1
-                          }}
-                        >
-                          Assign
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', 
+        gap: '1.5rem' 
+      }}>
+        {alerts.map((a) => (
+          <div key={a._id} className="glass-card" style={{ 
+            padding: '1.5rem', 
+            borderTop: '5px solid #ef4444',
+            background: '#fff',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1.2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ padding: '8px', background: '#fee2e2', borderRadius: '10px' }}>
+                  <Bell size={18} color="#ef4444" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>Alert Reason</div>
+                  <div style={{ fontSize: '1rem', fontWeight: 800, color: '#991b1b' }}>{a.reason}</div>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Clock size={12} /> {new Date(a.dateTime).toLocaleTimeString()}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{new Date(a.dateTime).toLocaleDateString()}</div>
+              </div>
+            </div>
+
+            {/* Parameter Snapshot */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.8rem', marginBottom: '1.2rem' }}>
+              {[
+                { label: 'TDS', value: a.tds, icon: Thermometer, color: '#3b82f6' },
+                { label: 'Turbidity', value: a.turbidity, icon: Droplets, color: '#06b6d4' },
+                { label: 'pH', value: a.ph, icon: Activity, color: '#8b5cf6' }
+              ].map((p, i) => (
+                <div key={i} style={{ padding: '8px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+                  <div style={{ fontSize: '0.6rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase' }}>{p.label}</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: p.color }}>{p.value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Context */}
+            <div style={{ padding: '12px', background: '#f1f5f9', borderRadius: '10px', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#1e293b' }}>
+                   <User size={14} color="#64748b" /> <strong>{a.user?.name || 'Unknown'}</strong>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#1e293b' }}>
+                   <Database size={14} color="#64748b" /> <strong>{a.meterId}</strong>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#64748b' }}>
+                <MapPin size={14} /> {a.zone} • {a.tank} • {a.ward}
+              </div>
+            </div>
+
+            {/* Assignment Logic */}
+            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '1.2rem' }}>
+              {a.assignedEngineer ? (
+                <div style={{ 
+                  padding: '10px', 
+                  background: '#f0fdf4', 
+                  borderRadius: '8px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '10px',
+                  color: '#166534',
+                  fontSize: '0.85rem',
+                  fontWeight: 600
+                }}>
+                  <CheckCircle2 size={16} /> Task Assigned: {a.assignedEngineer.name}
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: '0.8rem' }}>
+                  <select 
+                    className="form-control"
+                    onChange={(e) => setSelectedEngineers({ ...selectedEngineers, [a._id]: e.target.value })} 
+                    value={selectedEngineers[a._id] || ""}
+                    style={{ flex: 1, padding: '10px', borderRadius: '8px', fontSize: '0.85rem', border: '1px solid #e2e8f0' }}
+                  >
+                    <option value="" disabled>Select Engineer</option>
+                    {engineers.filter(e => e.zone === a.zone).map(eng => (
+                      <option key={eng._id} value={eng._id}>{eng.name}</option>
+                    ))}
+                  </select>
+                  <button 
+                    onClick={() => handleAssign(a._id, selectedEngineers[a._id])}
+                    disabled={!selectedEngineers[a._id]}
+                    style={{ 
+                      padding: '10px 20px', 
+                      background: '#0f172a', 
+                      color: '#fff', 
+                      border: 'none', 
+                      borderRadius: '8px', 
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: !selectedEngineers[a._id] ? 'not-allowed' : 'pointer',
+                      opacity: !selectedEngineers[a._id] ? 0.5 : 1
+                    }}
+                  >
+                    <UserPlus size={16} /> Assign
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {alerts.length === 0 && (
+          <div className="glass-card" style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '5rem', background: '#f0fdf4' }}>
+            <CheckCircle2 size={64} color="#10b981" style={{ opacity: 0.2, marginBottom: '1.5rem' }} />
+            <h2 style={{ color: '#166534', fontWeight: 800 }}>System Healthy</h2>
+            <p style={{ color: '#15803d' }}>All sensor parameters across all zones are within safety limits.</p>
+          </div>
+        )}
       </div>
     </div>
   );
