@@ -204,18 +204,17 @@ const AdminLayout = () => {
                 width: '100%',
                 padding: '12px',
                 borderRadius: '8px',
-                background: isCollapsed ? 'rgba(239, 68, 68, 0.1)' : '#ef4444',
-                color: isCollapsed ? '#ef4444' : '#fff',
+                background: isCollapsed ? 'rgba(185, 28, 28, 0.1)' : '#b91c1c',
+                color: isCollapsed ? '#b91c1c' : '#fff',
                 border: 'none',
-                fontWeight: 700,
-                cursor: 'pointer',
+                fontWeight: 600,
                 fontSize: '0.8rem',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: isCollapsed ? 'center' : 'flex-start',
+                justifyContent: 'center',
                 gap: '10px',
                 transition: 'all 0.3s',
-                boxShadow: isCollapsed ? 'none' : '0 4px 15px rgba(239, 68, 68, 0.3)'
+                boxShadow: isCollapsed ? 'none' : '0 4px 12px rgba(185, 28, 28, 0.2)'
               }}
             >
               <LogOut size={18} />
@@ -227,8 +226,8 @@ const AdminLayout = () => {
         {/* Main Content */}
         <main className="main-content" style={{ 
           flex: 1, 
-          padding: '1.5rem 2.5rem',
-          background: 'transparent'
+          padding: '1.5rem 2rem',
+          background: '#f1f7fe'
         }}>
           {notification && (
             <div className={`notification-popup ${notification.type}`} style={{

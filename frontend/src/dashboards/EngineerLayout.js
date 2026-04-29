@@ -137,10 +137,10 @@ const EngineerLayout = () => {
                 width: '100%',
                 padding: '12px',
                 borderRadius: '8px',
-                background: isCollapsed ? 'rgba(239, 68, 68, 0.1)' : '#ef4444',
-                color: isCollapsed ? '#ef4444' : '#fff',
+                background: isCollapsed ? 'rgba(185, 28, 28, 0.1)' : '#b91c1c',
+                color: isCollapsed ? '#b91c1c' : '#fff',
                 border: 'none',
-                fontWeight: 700,
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -155,7 +155,7 @@ const EngineerLayout = () => {
           </div>
         </aside>
 
-        <main className="main-content custom-scrollbar" style={{ flex: 1, padding: '2rem', overflowY: 'auto', position: 'relative' }}>
+        <main className="main-content custom-scrollbar" style={{ flex: 1, padding: '1.5rem', overflowY: 'auto', position: 'relative', background: '#f1f7fe' }}>
           {notification && (
             <div className={`notification-popup ${notification.type}`} style={{
               position: 'absolute',

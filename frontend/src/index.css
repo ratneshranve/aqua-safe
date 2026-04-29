@@ -183,11 +183,11 @@ h3 { font-size: 0.95rem; font-weight: 700; }
 .stat-card,
 .user-profile-sm,
 .auth-form {
-  background: #ffffff !important;
-  border: 1px solid #e1e8f0 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
-  transition: all 0.3s ease !important;
+  background: #ffffff;
+  border: 1px solid #e1e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
