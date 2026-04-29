@@ -14,6 +14,11 @@ const engineerRoutes = require('./routes/engineerRoutes');
 const app = express();
 const server = http.createServer(app);
 
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'AquaSafe Backend is running' });
+});
+
 // Setup Socket.io
 const io = socketIoSetup(server);
 
