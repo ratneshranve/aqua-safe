@@ -76,8 +76,8 @@ const ManageUsers = () => {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
-        <h1 className="page-title" style={{ fontSize: '1.8rem', color: '#1e293b' }}>Manage Users</h1>
+      <div className="page-header" style={{ marginBottom: '1rem' }}>
+        <h1 className="page-title" style={{ fontSize: '1.4rem', color: '#1e293b' }}>Manage Users</h1>
       </div>
 
       <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', position: 'relative', zIndex: 1 }}>
