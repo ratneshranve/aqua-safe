@@ -42,7 +42,7 @@ const AdminHome = () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const res = await axios.get(`${API_URL}/api/admin/dashboard`, config);
-        setData(res.data);
+        setData(res.data || { zoneStatus: {}, stats: {} });
       } catch (err) {
         console.error(err);
       }
@@ -58,10 +58,10 @@ const AdminHome = () => {
   };
 
   const statCards = [
-    { title: 'Registered Citizens', value: data.stats?.totalUsers || 0, icon: Users, bg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', shadow: 'rgba(59, 130, 246, 0.2)' },
-    { title: 'Active Engineers', value: data.stats?.totalEngineers || 0, icon: ShieldCheck, bg: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', shadow: 'rgba(139, 92, 246, 0.2)' },
-    { title: 'Active Alerts', value: data.stats?.activeAlerts || 0, icon: AlertTriangle, bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.2)' },
-    { title: 'Pending Tasks', value: data.stats?.pendingTasks || 0, icon: ClipboardList, bg: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', shadow: 'rgba(245, 158, 11, 0.2)' },
+    { title: 'Registered Citizens', value: data?.stats?.totalUsers || 0, icon: Users, bg: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', shadow: 'rgba(59, 130, 246, 0.2)' },
+    { title: 'Active Engineers', value: data?.stats?.totalEngineers || 0, icon: ShieldCheck, bg: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', shadow: 'rgba(139, 92, 246, 0.2)' },
+    { title: 'Active Alerts', value: data?.stats?.activeAlerts || 0, icon: AlertTriangle, bg: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', shadow: 'rgba(239, 68, 68, 0.2)' },
+    { title: 'Pending Tasks', value: data?.stats?.pendingTasks || 0, icon: ClipboardList, bg: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', shadow: 'rgba(245, 158, 11, 0.2)' },
   ];
 
   return (
@@ -145,7 +145,7 @@ const AdminHome = () => {
                 const x = HEX_SIZE * Math.sqrt(3) * (hex.q + hex.r/2);
                 const y = HEX_SIZE * (3/2) * hex.r;
                 const points = getHexPoints(x, y, HEX_SIZE);
-                const status = data.zoneStatus[hex.id] || 'Green';
+                const status = (data?.zoneStatus || {})[hex.id] || 'Green';
                 const fillBase = getColor(status);
                 const isSelected = selectedZone === hex.id;
                 
@@ -176,10 +176,10 @@ const AdminHome = () => {
                 boxShadow: '0 20px 40px rgba(0,0,0,0.15)', border: '1px solid #e2e8f0', minWidth: '200px', animation: 'fadeIn 0.3s ease-out' 
               }}>
                 <h3 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#1e293b', fontWeight: 800 }}>Zone: {selectedZone}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px', background: getColor(data.zoneStatus[selectedZone] || 'Green') + '15', borderRadius: '8px' }}>
-                  <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: getColor(data.zoneStatus[selectedZone] || 'Green') }}></div>
-                  <span style={{ fontWeight: 700, fontSize: '0.85rem', color: getColor(data.zoneStatus[selectedZone] || 'Green') }}>
-                    Status: {data.zoneStatus[selectedZone] || 'Green'}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px', background: getColor((data?.zoneStatus || {})[selectedZone] || 'Green') + '15', borderRadius: '8px' }}>
+                  <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: getColor((data?.zoneStatus || {})[selectedZone] || 'Green') }}></div>
+                  <span style={{ fontWeight: 700, fontSize: '0.85rem', color: getColor((data?.zoneStatus || {})[selectedZone] || 'Green') }}>
+                    Status: {(data?.zoneStatus || {})[selectedZone] || 'Green'}
                   </span>
                 </div>
                 <button 

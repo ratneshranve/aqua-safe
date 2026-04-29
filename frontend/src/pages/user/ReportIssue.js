@@ -27,37 +27,37 @@ const ReportIssue = () => {
   };
 
   return (
-    <div style={{ animation: 'fadeIn 0.5s ease-out', padding: '0.5rem' }}>
-      <div className="page-header" style={{ marginBottom: '1rem' }}>
+    <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
+      <div className="page-header" style={{ marginBottom: '0.8rem' }}>
         <h1 className="page-title" style={{ fontSize: '1.4rem', color: '#1e293b' }}>Report Water Issue</h1>
         <p style={{ color: '#64748b', fontSize: '0.8rem' }}>Directly notify water department engineers of quality concerns.</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '1rem', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '0.8rem', alignItems: 'start' }}>
         {/* Main Form */}
-        <div className="glass-card" style={{ padding: '1.5rem', background: '#fff' }}>
+        <div className="glass-card" style={{ padding: '1rem', background: '#fff' }}>
           {msg && (
             <div style={{ 
               background: msg.includes('success') ? '#f0fdf4' : '#fef2f2', 
               color: msg.includes('success') ? '#166534' : '#991b1b',
-              padding: '10px 14px',
-              borderRadius: '8px',
-              marginBottom: '1rem',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              marginBottom: '0.8rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              fontSize: '0.85rem',
+              gap: '8px',
+              fontSize: '0.8rem',
               fontWeight: 600,
               border: `1px solid ${msg.includes('success') ? '#bbf7d0' : '#fecaca'}`
             }}>
-              {msg.includes('success') ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
+              {msg.includes('success') ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
               {msg}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
             <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '0.3rem' }}>
                 <AlertCircle size={12} /> Problem Category
               </label>
               <select 
@@ -66,10 +66,10 @@ const ReportIssue = () => {
                 onChange={(e) => setReason(e.target.value)}
                 style={{ 
                   width: '100%', 
-                  padding: '10px', 
-                  borderRadius: '8px', 
+                  padding: '8px', 
+                  borderRadius: '6px', 
                   border: '1px solid #e2e8f0',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   outline: 'none',
                   background: '#f8fafc',
                   fontWeight: 600,
@@ -94,17 +94,17 @@ const ReportIssue = () => {
               { label: 'Ward', value: user.ward, icon: Layers }
             ].map((field, idx) => (
               <div key={idx}>
-                <label style={{ fontSize: '0.65rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '0.3rem', display: 'block' }}>{field.label}</label>
+                <label style={{ fontSize: '0.6rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '0.2rem', display: 'block' }}>{field.label}</label>
                 <div style={{ 
-                  padding: '8px 12px', 
+                  padding: '6px 10px', 
                   background: '#f1f5f9', 
-                  borderRadius: '8px', 
+                  borderRadius: '6px', 
                   color: '#475569', 
-                  fontSize: '0.85rem', 
+                  fontSize: '0.8rem', 
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '6px',
                   border: '1px solid #e2e8f0'
                 }}>
                   <field.icon size={12} /> {field.value}
@@ -112,52 +112,52 @@ const ReportIssue = () => {
               </div>
             ))}
 
-            <div style={{ gridColumn: 'span 2', marginTop: '0.5rem' }}>
+            <div style={{ gridColumn: 'span 2', marginTop: '0.4rem' }}>
               <button 
                 type="submit" 
                 disabled={loading}
                 style={{ 
                   width: '100%', 
-                  padding: '12px', 
+                  padding: '10px', 
                   background: 'linear-gradient(135deg, #004aad 0%, #002a5c 100%)', 
                   color: '#fff', 
                   border: 'none', 
-                  borderRadius: '10px', 
+                  borderRadius: '8px', 
                   fontWeight: 700, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  gap: '10px',
+                  gap: '8px',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all 0.3s',
-                  fontSize: '0.95rem',
-                  boxShadow: '0 4px 12px rgba(0, 74, 173, 0.3)'
+                  fontSize: '0.9rem',
+                  boxShadow: '0 4px 10px rgba(0, 74, 173, 0.2)'
                 }}
               >
-                <Send size={16} /> {loading ? 'Submitting...' : 'Submit Report'}
+                <Send size={14} /> {loading ? 'Submitting...' : 'Submit Report'}
               </button>
             </div>
           </form>
         </div>
 
         {/* Info Sidebar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div className="glass-card" style={{ padding: '1rem', background: '#fffbeb', borderLeft: '4px solid #f59e0b' }}>
-            <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: '#92400e', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
-              <Info size={14} /> Guidelines
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          <div className="glass-card" style={{ padding: '0.8rem', background: '#fffbeb', borderLeft: '4px solid #f59e0b' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#92400e', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.3rem', textTransform: 'uppercase' }}>
+              <Info size={12} /> Guidelines
             </h3>
-            <ul style={{ fontSize: '0.75rem', color: '#b45309', paddingLeft: '1rem', margin: 0 }}>
+            <ul style={{ fontSize: '0.7rem', color: '#b45309', paddingLeft: '0.8rem', margin: 0 }}>
               <li>Reports assigned to zone engineers.</li>
               <li>Expected response: 2-4 hours.</li>
               <li>Track in "My Reports" tab.</li>
             </ul>
           </div>
           
-          <div className="glass-card" style={{ padding: '1rem', background: '#eff6ff', borderLeft: '4px solid #3b82f6' }}>
-            <h3 style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1e40af', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
-              <AlertCircle size={14} /> Urgent Help
+          <div className="glass-card" style={{ padding: '0.8rem', background: '#eff6ff', borderLeft: '4px solid #3b82f6' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#1e40af', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.3rem', textTransform: 'uppercase' }}>
+              <AlertCircle size={12} /> Urgent Help
             </h3>
-            <p style={{ fontSize: '0.75rem', color: '#1d4ed8', margin: 0 }}>
+            <p style={{ fontSize: '0.7rem', color: '#1d4ed8', margin: 0 }}>
               Emergency Helpline:<br/><strong>1800-AQUA-SAFE</strong>
             </p>
           </div>
