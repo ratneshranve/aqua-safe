@@ -37,7 +37,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/engineer', engineerRoutes);
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
+const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/aquasafe';
+mongoose.connect(dbURI)
 .then(() => console.log('MongoDB connected successfully.'))
 .catch(err => console.error('MongoDB connection error:', err));
 
