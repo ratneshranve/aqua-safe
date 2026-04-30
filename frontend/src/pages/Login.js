@@ -5,7 +5,7 @@ import { AuthContext } from '../AuthContext';
 import API_URL from '../config';
 
 import aquasafeLogo from '../aquasafe-logo.png';
-import { MainNavbar } from './LandingPage';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -150,7 +150,7 @@ const Login = () => {
       <div style={{ 
         flex: '1', 
         position: 'relative',
-        background: `url(${require('./assets/login_bg.png')}) no-repeat center center / cover`,
+        background: `url(${require('./assets/login_bg.jpeg')}) no-repeat center center / cover`,
         overflow: 'hidden'
       }}>
         {/* Torn Edge Effect */}

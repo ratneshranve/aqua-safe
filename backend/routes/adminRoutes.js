@@ -1,11 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { getDashboardData, getUsers, addUser, deleteUser, getEngineers, addEngineer, deleteEngineer, getAllReports, getAssignedTasks, getResolvedReports, assignEngineer, getAllAlerts, assignEngineerToAlert } = require('../controllers/adminController');
+const { 
+  getDashboardData, 
+  getUsers, 
+  addUser, 
+  deleteUser, 
+  getEngineers, 
+  addEngineer, 
+  deleteEngineer, 
+  getAllReports, 
+  getAssignedTasks, 
+  getResolvedReports, 
+  assignEngineer, 
+  getAllAlerts, 
+  assignEngineerToAlert,
+  sendOTP
+} = require('../controllers/adminController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.use(protect, admin);
 
 router.get('/dashboard', getDashboardData);
+router.post('/send-otp', sendOTP);
 
 // Users
 router.route('/users')

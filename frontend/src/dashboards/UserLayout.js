@@ -50,12 +50,12 @@ const UserLayout = () => {
   ];
 
   return (
-    <div className="dashboard-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#f8fafc' }}>
+    <div className="dashboard-wrapper" style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: 'var(--bg-color)' }}>
       {/* Top Navbar */}
       <header className="top-navbar" style={{ 
         height: '60px',
-        background: '#0a0a0a',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'var(--sidebar-bg)',
+        borderBottom: '1px solid var(--border-light)',
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
@@ -67,9 +67,9 @@ const UserLayout = () => {
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
             style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: '#fff',
+              background: 'var(--nav-hover-bg)',
+              border: '1px solid var(--border-light)',
+              color: 'var(--text-main)',
               padding: '8px',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -80,18 +80,18 @@ const UserLayout = () => {
             <Menu size={20} />
           </button>
           
-          <div style={{ fontSize: '0.85rem', color: '#888', fontWeight: 500, borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '1.5rem' }}>
-            Welcome, <span style={{ color: '#fff', fontWeight: 700 }}>{user?.name || 'Citizen'}</span>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500, borderLeft: '1px solid var(--border-light)', paddingLeft: '1.5rem' }}>
+            Welcome, <span style={{ color: 'var(--text-main)', fontWeight: 700 }}>{user?.name || 'Citizen'}</span>
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <button onClick={toggleTheme} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', color: '#fff', width: '35px', height: '35px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button onClick={toggleTheme} style={{ background: 'var(--nav-hover-bg)', border: '1px solid var(--border-light)', cursor: 'pointer', color: 'var(--text-main)', width: '35px', height: '35px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <div className="notification-bell" style={{ color: '#fff', cursor: 'pointer', position: 'relative', background: 'rgba(255,255,255,0.05)', width: '35px', height: '35px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => navigate('/user/alerts')}>
+          <div className="notification-bell" style={{ color: 'var(--text-main)', cursor: 'pointer', position: 'relative', background: 'var(--nav-hover-bg)', width: '35px', height: '35px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => navigate('/user/alerts')}>
             <Bell size={18} />
-            {notification && <span className="badge" style={{ position: 'absolute', top: '-2px', right: '-2px', background: '#ef4444', width: '10px', height: '10px', borderRadius: '50%', border: '2px solid #0a0a0a' }}></span>}
+            {notification && <span className="badge" style={{ position: 'absolute', top: '-2px', right: '-2px', background: '#ef4444', width: '10px', height: '10px', borderRadius: '50%', border: '2px solid var(--sidebar-bg)' }}></span>}
           </div>
         </div>
       </header>
@@ -99,7 +99,7 @@ const UserLayout = () => {
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <aside className="sidebar" style={{ 
           width: isCollapsed ? '75px' : '230px',
-          background: '#0a0a0a',
+          background: 'var(--sidebar-bg)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           display: 'flex',
           flexDirection: 'column',
@@ -107,7 +107,7 @@ const UserLayout = () => {
         }}>
           <div className="sidebar-header" style={{ padding: '1.5rem 0', textAlign: 'center' }}>
             <img src={aquasafeLogo} alt="AquaSafe" style={{ width: isCollapsed ? '35px' : '100px', transition: 'all 0.4s' }} />
-            {!isCollapsed && <p style={{fontSize: '0.6rem', color: '#444', marginTop: '0.4rem', letterSpacing: '1.5px', fontWeight: 900 }}>CITIZEN PORTAL</p>}
+            {!isCollapsed && <p style={{fontSize: '0.6rem', color: 'var(--text-muted)', marginTop: '0.4rem', letterSpacing: '1.5px', fontWeight: 900 }}>CITIZEN PORTAL</p>}
           </div>
           
           <nav className="sidebar-nav custom-scrollbar" style={{ flex: 1, padding: '0.5rem', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
@@ -123,7 +123,7 @@ const UserLayout = () => {
                   padding: isCollapsed ? '0.8rem 0' : '0.8rem 1.8rem',
                   borderRadius: '10px',
                   textDecoration: 'none',
-                  color: '#888',
+                  color: 'var(--text-muted)',
                   transition: 'all 0.3s',
                   justifyContent: isCollapsed ? 'center' : 'flex-start',
                   fontSize: '0.85rem',

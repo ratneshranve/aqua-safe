@@ -214,14 +214,16 @@
       transition: color 0.5s ease, text-shadow 0.5s ease;
     }
 
-    /* Hidden Configuration Settings (Values bound to UI) */
+    /* Simulation Configuration Settings */
     .settings {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       margin-bottom: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--glass-border);
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
       justify-content: center;
     }
 
@@ -432,15 +434,15 @@
   <div class="container">
     <h1>AquaSafe Simulator</h1>
 
-    <!-- Hidden configuration for logic compatibility -->
+    <!-- Configuration for Simulation -->
     <div class="settings">
       <div class="input-grp">
         <label>Backend URL</label>
         <input type="text" id="url" value="http://localhost:5000/api/sensor-data" autocomplete="off" />
       </div>
       <div class="input-grp">
-        <label>Meter ID</label>
-        <input type="text" id="meterId" value="METER-101" autocomplete="off" />
+        <label>Meter ID (Format: METER-XX)</label>
+        <input type="text" id="meterId" value="METER-01" oninput="document.getElementById('dispMeterId').innerText = this.value" autocomplete="off" />
       </div>
     </div>
 
@@ -466,6 +468,10 @@
 
       <!-- Meter Device -->
       <div class="meter-device" id="app">
+        <div class="meter-display-row" style="background: rgba(14, 165, 233, 0.1); border-color: rgba(14, 165, 233, 0.2);">
+          <span class="meter-label" style="color: var(--pure-water);">DEVICE ID</span>
+          <span class="meter-val" id="dispMeterId" style="font-size: 1.1rem;">METER-01</span>
+        </div>
         <div class="meter-display-row">
           <span class="meter-label">TDS</span>
           <span class="meter-val" id="dispTds">400</span>
