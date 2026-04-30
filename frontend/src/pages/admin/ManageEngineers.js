@@ -30,21 +30,37 @@ const ManageEngineers = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const [loading, setLoading] = useState(false);
+
   const handleAddEngineer = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    
+    if (!user || !user.token) {
+      alert("Authentication error: Please log in again.");
+      return;
+    }
+
+    setLoading(true);
+    console.log("Attempting to register engineer with data:", formData);
+    
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`${API_URL}/api/admin/engineers`, formData, config);
-      fetchEngineers();
+      const res = await axios.post(`${API_URL}/api/admin/engineers`, formData, config);
+      console.log("Server response:", res.data);
+      
+      await fetchEngineers();
       setFormData({ name: '', email: '', password: '', phone: '', zone: 'Z-1' });
-      alert('Engineer added successfully');
+      alert('Engineer registered successfully!');
     } catch (err) {
-      console.error(err);
-      alert('Failed to add engineer');
+      console.error("Registration error:", err);
+      alert(`Registration Failed: ${err.response?.data?.message || err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to remove this engineer?")) return;
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.delete(`${API_URL}/api/admin/engineers/${id}`, config);
@@ -55,47 +71,78 @@ const ManageEngineers = () => {
   };
 
   return (
-    <div>
-      <div className="page-header">
-        <h1 className="page-title">Manage Engineers</h1>
+    <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
+      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
+        <h1 className="page-title" style={{ fontSize: '1.8rem', color: '#1e293b' }}>Manage Engineers</h1>
       </div>
 
-      <div className="glass-card" style={{marginBottom: '2rem'}}>
-        <h2>Add Engineer</h2>
-        <form onSubmit={handleAddEngineer} style={{display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1rem'}}>
-          <input className="form-control" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required style={{flex: '1 1 200px'}} />
-          <input className="form-control" name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={{flex: '1 1 200px'}} />
-          <input className="form-control" name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required style={{flex: '1 1 200px'}} />
-          <input className="form-control" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} required style={{flex: '1 1 200px'}} />
+      <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', position: 'relative', zIndex: 1 }}>
+        <h2 style={{ color: '#666', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem', fontWeight: 700 }}>Add New Engineer</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.8rem' }}>
+          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #e1e8f0' }} />
+          <input name="email" type="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #e1e8f0' }} />
+          <input name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #e1e8f0' }} />
+          <input name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid #e1e8f0' }} />
           
-          <select className="form-control" name="zone" value={formData.zone} onChange={handleChange} style={{flex: '1 1 100px'}}>
-            {[...Array(19)].map((_,i) => <option key={`Z-${i+1}`}>Z-{i+1}</option>)}
+          <select name="zone" value={formData.zone} onChange={handleChange} style={{ padding: '8px', borderRadius: '6px', border: '1px solid #e1e8f0' }}>
+            {[...Array(19)].map((_,i) => <option key={`Z-${i+1}`} value={`Z-${i+1}`}>Z-{i+1}</option>)}
           </select>
 
-          <button type="submit" className="btn btn-primary" style={{flex: '1 1 100%'}}>Add Engineer</button>
-        </form>
+          <button 
+            type="button"
+            onClick={handleAddEngineer}
+            disabled={loading}
+            style={{ 
+              gridColumn: '1 / -1', 
+              background: loading ? '#444' : '#000', 
+              color: '#fff', 
+              border: 'none', 
+              padding: '0.8rem', 
+              borderRadius: '8px', 
+              fontWeight: 700,
+              fontSize: '0.9rem',
+              marginTop: '0.5rem',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              zIndex: 10,
+              position: 'relative'
+            }}
+          >
+            {loading ? 'Registering Engineer...' : 'Register Engineer'}
+          </button>
+        </div>
       </div>
 
-      <div className="table-container">
-        <table>
+      <div className="table-container" style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e1e8f0', overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Zone Assigned</th>
-              <th>Action</th>
+            <tr style={{ background: '#f8fafc', textAlign: 'left', borderBottom: '1px solid #e1e8f0' }}>
+              <th style={{ padding: '1rem' }}>Name</th>
+              <th style={{ padding: '1rem' }}>Email</th>
+              <th style={{ padding: '1rem' }}>Phone</th>
+              <th style={{ padding: '1rem' }}>Zone Assigned</th>
+              <th style={{ padding: '1rem', textAlign: 'right' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {engineers.map(e => (
-              <tr key={e._id}>
-                <td>{e.name}</td>
-                <td>{e.email}</td>
-                <td>{e.phone}</td>
-                <td>{e.zone}</td>
-                <td>
-                  <button onClick={() => handleDelete(e._id)} style={{background: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer'}}>Delete</button>
+              <tr key={e._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                <td style={{ padding: '0.8rem 1rem', fontWeight: 500 }}>{e.name}</td>
+                <td style={{ padding: '0.8rem 1rem', color: '#666' }}>{e.email}</td>
+                <td style={{ padding: '0.8rem 1rem', color: '#666' }}>{e.phone}</td>
+                <td style={{ padding: '0.8rem 1rem' }}>
+                  <span style={{ background: '#e2e8f0', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 700 }}>{e.zone}</span>
+                </td>
+                <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
+                  <button onClick={() => handleDelete(e._id)} style={{ 
+                    background: 'transparent', 
+                    color: '#ef4444', 
+                    border: '1px solid #fee2e2', 
+                    padding: '4px 12px', 
+                    borderRadius: '6px', 
+                    cursor: 'pointer',
+                    fontSize: '0.75rem',
+                    fontWeight: 600
+                  }}>Remove</button>
                 </td>
               </tr>
             ))}
