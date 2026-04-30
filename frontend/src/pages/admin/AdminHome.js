@@ -134,7 +134,8 @@ const AdminHome = () => {
               const y = HEX_SIZE * (3/2) * hex.r;
               const points = getHexPoints(x, y, HEX_SIZE);
               
-              const status = zones[hex.id] || 'Green';
+              const zoneInfo = zones[hex.id] || { status: 'Green', name: 'Loading...' };
+              const status = zoneInfo.status;
               const fillBase = getColor(status);
               const isSelected = selectedZone === hex.id;
               
@@ -203,23 +204,25 @@ const AdminHome = () => {
               top: '0%', 
               right: '0%', 
               background: '#fff', 
-              padding: '1rem', 
+              padding: '1.2rem', 
               borderRadius: '12px', 
               border: '1px solid #e1e8f0', 
               color: '#333', 
               boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-              minWidth: '180px', 
+              minWidth: '220px', 
               animation: 'slideUpPopup 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               zIndex: 100
             }}>
-              <h3 style={{ margin: '0 0 5px 0', fontSize: '1rem', color: '#333' }}>Sector: {selectedZone}</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: getColor(zones[selectedZone] || 'Green') }}></div>
-                <p style={{ margin: 0, fontWeight: '600', fontSize: '0.85rem' }}>
-                   Status: {zones[selectedZone] || 'Green'}
+              <h3 style={{ margin: '0 0 4px 0', fontSize: '1rem', color: '#1e293b', fontWeight: 800 }}>{zones[selectedZone]?.name || 'Unknown Area'}</h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.75rem', color: '#666', fontWeight: 500 }}>Sector ID: {selectedZone}</p>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', padding: '8px', borderRadius: '8px' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: getColor(zones[selectedZone]?.status || 'Green') }}></div>
+                <p style={{ margin: 0, fontWeight: '700', fontSize: '0.85rem' }}>
+                   Status: {zones[selectedZone]?.status || 'Green'}
                 </p>
               </div>
-              <button onClick={() => setSelectedZone(null)} style={{ marginTop: '0.8rem', background: '#f8f9fa', border: '1px solid #e1e8f0', color: '#666', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}>Close</button>
+              <button onClick={() => setSelectedZone(null)} style={{ marginTop: '1rem', background: '#334155', border: 'none', color: '#fff', width: '100%', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600 }}>Close View</button>
             </div>
           )}
         </div>

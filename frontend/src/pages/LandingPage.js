@@ -12,7 +12,7 @@ import heroVideo from './assets/fbabd4ea1324a4f9eeddb8289f792ab6_720w.mp4';
 
 export const MainNavbar = () => {
   const navigate = useNavigate();
-  const { user, logout } = React.useContext(AuthContext);
+  const { user } = React.useContext(AuthContext);
   const { theme, toggleTheme } = React.useContext(ThemeContext);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
@@ -24,11 +24,7 @@ export const MainNavbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const getDashboardLink = () => {
-    if (user?.role === 'Admin') return '/admin';
-    if (user?.role === 'Engineer') return '/engineer';
-    return '/user';
-  };
+
 
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
@@ -130,13 +126,9 @@ export const MainNavbar = () => {
 };
 
 const LandingPage = () => {
-  const { user } = React.useContext(AuthContext);
 
-  const getDashboardLink = () => {
-    if (user?.role === 'Admin') return '/admin';
-    if (user?.role === 'Engineer') return '/engineer';
-    return '/user';
-  };
+
+
 
   return (
     <div style={{ background: '#fff', overflowX: 'hidden', fontFamily: "'Inter', sans-serif" }}>
@@ -342,6 +334,58 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" style={{ padding: '8rem 2rem', background: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '4rem', alignItems: 'center' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ color: '#004aad', fontWeight: 800, fontSize: '0.8rem', marginBottom: '1rem', letterSpacing: '2px' }}>OUR MISSION</div>
+            <h2 style={{ fontSize: '3.5rem', fontWeight: 900, color: '#111', lineHeight: 1.1, marginBottom: '2rem' }}>Securing Every <span style={{ color: '#004aad' }}>Drop</span> for a Healthier Community.</h2>
+            <p style={{ fontSize: '1.1rem', color: '#555', lineHeight: 1.8, marginBottom: '2rem' }}>
+              AquaSafe is Indore's leading real-time water quality monitoring platform. We combine advanced IoT sensors with intelligent analytics to provide citizens and authorities with instant visibility into water purity, ensuring safety and transparency in every household.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              <div>
+                <h4 style={{ color: '#111', marginBottom: '0.5rem' }}>Real-time Tracking</h4>
+                <p style={{ color: '#777', fontSize: '0.9rem' }}>Continuous monitoring of TDS, Turbidity, and pH levels.</p>
+              </div>
+              <div>
+                <h4 style={{ color: '#111', marginBottom: '0.5rem' }}>Instant Alerts</h4>
+                <p style={{ color: '#777', fontSize: '0.9rem' }}>Immediate notifications if contamination is detected in your zone.</p>
+              </div>
+            </div>
+          </div>
+          <div style={{ flex: 0.8, position: 'relative' }}>
+             <div style={{ 
+               width: '100%', 
+               height: '450px', 
+               background: 'linear-gradient(135deg, #004aad 0%, #00d4ff 100%)',
+               borderRadius: '30px',
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'center',
+               color: '#fff',
+               fontSize: '5rem',
+               boxShadow: '0 30px 60px rgba(0,74,173,0.2)'
+             }}>
+               💧
+             </div>
+             <div style={{ 
+               position: 'absolute', 
+               bottom: '-30px', 
+               left: '-30px', 
+               background: '#fff', 
+               padding: '2rem', 
+               borderRadius: '20px', 
+               boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+               border: '1px solid #f0f0f0'
+             }}>
+               <div style={{ fontSize: '2rem', fontWeight: 900, color: '#004aad' }}>100%</div>
+               <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#666' }}>ACCURACY GUARANTEED</div>
+             </div>
+          </div>
+        </div>
+      </section>
+
       {/* Water Safety Section */}
       <section id="business" style={{ padding: '6rem 2rem', position: 'relative', background: '#fef7e2' }}>
         <div style={{ position: 'absolute', top: '-60px', left: 0, right: 0, height: '60px', background: '#fef7e2', borderRadius: '60px 60px 0 0' }}></div>
@@ -448,6 +492,71 @@ const LandingPage = () => {
               <div style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '0.5rem' }}>Reports & Data</div>
               <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.9 }}>Directly access detailed safety analysis reports.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Notice Section */}
+      <section id="notice" style={{ padding: '5rem 2rem', background: '#f0f7ff' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div style={{ color: '#004aad', fontWeight: 800, fontSize: '0.7rem', marginBottom: '0.3rem', letterSpacing: '2px' }}>ANNOUNCEMENTS</div>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#111', margin: 0 }}>Latest Notices</h2>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            {[
+              { date: '05.15', year: '2024', title: 'Scheduled Maintenance in Zone 4 (Rajwada)', tag: 'Maintenance', priority: 'High' },
+              { date: '05.12', year: '2024', title: 'New Water Quality Standards Implementation', tag: 'Regulation', priority: 'Medium' },
+              { date: '05.10', year: '2024', title: 'Smart Meter Installation Drive: Phase 2', tag: 'Update', priority: 'Low' },
+              { date: '05.08', year: '2024', title: 'Annual Water Safety Report Released', tag: 'Report', priority: 'Medium' }
+            ].map((notice, i) => (
+              <div key={i} className="notice-item-card" style={{
+                background: '#fff',
+                padding: '0.8rem 1.5rem',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1.5rem',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.02)',
+                border: '1px solid #e2e8f0',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}>
+                <div style={{ textAlign: 'center', minWidth: '60px', borderRight: '1px solid #f0f0f0', paddingRight: '1.5rem' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#004aad' }}>{notice.date}</div>
+                  <div style={{ fontSize: '0.65rem', color: '#aaa', fontWeight: 600 }}>{notice.year}</div>
+                </div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <span style={{ 
+                    fontSize: '0.6rem', 
+                    fontWeight: 800, 
+                    padding: '2px 8px', 
+                    borderRadius: '4px', 
+                    background: notice.priority === 'High' ? '#fff1f2' : '#f0f9ff', 
+                    color: notice.priority === 'High' ? '#ef4444' : '#004aad',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap'
+                  }}>{notice.tag}</span>
+                  <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#334155', fontWeight: 600 }}>{notice.title}</h4>
+                </div>
+                <div style={{ fontSize: '1rem', color: '#cbd5e1' }}>→</div>
+              </div>
+            ))}
+          </div>
+          
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <button style={{ 
+              background: 'transparent', 
+              border: 'none', 
+              color: '#004aad', 
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              textDecoration: 'underline'
+            }}>
+              View all announcements
+            </button>
           </div>
         </div>
       </section>
