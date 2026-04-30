@@ -10,9 +10,8 @@ const Report = require('./models/Report');
 
 const seedDB = async () => {
   try {
-    const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/aquasafe';
-    console.log('URI:', dbURI);
-    await mongoose.connect(dbURI);
+    mongoose.connect(process.env.MONGODB_URI)
+     await mongoose.connect(process.env.MONGODB_URI);
     console.log('MongoDB connected for seeding...');
 
     // Clear existing data
