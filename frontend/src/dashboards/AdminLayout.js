@@ -60,15 +60,15 @@ const AdminLayout = () => {
       display: 'flex',
       flexDirection: 'column',
       fontFamily: "'Roboto', sans-serif",
-      background: 'linear-gradient(-45deg, #f8fafc, #ebf2f9, #f1f5f9, #e2e8f0)',
+      background: 'var(--bg-color)',
       backgroundSize: '400% 400%',
       animation: 'gradientMove 15s ease infinite'
     }}>
       {/* Top Navbar - Full Width */}
       <header className="top-navbar" style={{ 
         height: '60px',
-        background: '#0a0a0a',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'var(--sidebar-bg)',
+        borderBottom: '1px solid var(--border-light)',
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
@@ -82,9 +82,9 @@ const AdminLayout = () => {
           <button 
             onClick={() => setIsCollapsed(!isCollapsed)}
             style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: '#fff',
+              background: 'var(--nav-hover-bg)',
+              border: '1px solid var(--border-light)',
+              color: 'var(--text-main)',
               padding: '8px',
               borderRadius: '6px',
               cursor: 'pointer',
@@ -96,8 +96,8 @@ const AdminLayout = () => {
             <Menu size={20} />
           </button>
           
-          <div style={{ fontSize: '0.85rem', color: '#888', fontWeight: 500, borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '1.5rem' }}>
-            Welcome, <span style={{ color: '#fff', fontWeight: 700 }}>{user?.name || 'Admin'}</span>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500, borderLeft: '1px solid var(--border-light)', paddingLeft: '1.5rem' }}>
+            Welcome, <span style={{ color: 'var(--text-main)', fontWeight: 700 }}>{user?.name || 'Admin'}</span>
           </div>
         </div>
 
@@ -105,10 +105,10 @@ const AdminLayout = () => {
           <button 
             onClick={toggleTheme} 
             style={{ 
-              background: 'rgba(255,255,255,0.05)', 
-              border: '1px solid rgba(255,255,255,0.1)', 
+              background: 'var(--nav-hover-bg)', 
+              border: '1px solid var(--border-light)', 
               cursor: 'pointer', 
-              color: '#fff', 
+              color: 'var(--text-main)', 
               width: '35px',
               height: '35px',
               borderRadius: '8px',
@@ -120,10 +120,10 @@ const AdminLayout = () => {
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
           <div className="notification-bell" style={{ 
-            color: '#fff', 
+            color: 'var(--text-main)', 
             cursor: 'pointer',
             position: 'relative',
-            background: 'rgba(255,255,255,0.05)',
+            background: 'var(--nav-hover-bg)',
             width: '35px',
             height: '35px',
             borderRadius: '8px',
@@ -132,7 +132,7 @@ const AdminLayout = () => {
             justifyContent: 'center'
           }} onClick={() => navigate('/admin/alerts')}>
             <Bell size={18} />
-            {notification && <span className="badge" style={{ position: 'absolute', top: '-2px', right: '-2px', background: '#ef4444', width: '10px', height: '10px', borderRadius: '50%', border: '2px solid #0a0a0a' }}></span>}
+            {notification && <span className="badge" style={{ position: 'absolute', top: '-2px', right: '-2px', background: '#ef4444', width: '10px', height: '10px', borderRadius: '50%', border: '2px solid var(--sidebar-bg)' }}></span>}
           </div>
         </div>
       </header>
@@ -141,8 +141,8 @@ const AdminLayout = () => {
         {/* Sidebar - Below Navbar */}
         <aside className="sidebar" style={{ 
           width: isCollapsed ? '75px' : '230px',
-          background: '#0a0a0a',
-          borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+          background: 'var(--sidebar-bg)',
+          borderRight: '1px solid var(--border-light)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           overflow: 'hidden',
           display: 'flex',
@@ -157,7 +157,7 @@ const AdminLayout = () => {
               transition: 'all 0.4s ease',
               margin: '0 auto'
             }} />
-            {!isCollapsed && <p style={{fontSize: '0.6rem', color: '#444', marginTop: '0.4rem', letterSpacing: '1.5px', fontWeight: 900 }}>ADMINISTRATOR</p>}
+            {!isCollapsed && <p style={{fontSize: '0.6rem', color: 'var(--text-muted)', marginTop: '0.4rem', letterSpacing: '1.5px', fontWeight: 900 }}>ADMINISTRATOR</p>}
           </div>
           
           <nav className="sidebar-nav custom-scrollbar" style={{ 
@@ -181,7 +181,7 @@ const AdminLayout = () => {
                   padding: isCollapsed ? '0.8rem 0' : '0.8rem 1.8rem',
                   borderRadius: '10px',
                   textDecoration: 'none',
-                  color: '#888',
+                  color: 'var(--text-muted)',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   justifyContent: isCollapsed ? 'center' : 'flex-start',
                   fontSize: '0.85rem',
